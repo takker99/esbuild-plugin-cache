@@ -17,7 +17,6 @@ export function cache({ importmap = { imports: {} }, directory }: Config): Plugi
     name: 'deno-cache',
     setup(build) {
       build.onResolve({ filter: /.*/ }, async (args) => {
-        console.log(args);
         if (build.initialOptions.external?.includes(args.path)) return {external: true};
         const resolvedPath = resolve(args.path, importmap)
         if (resolvedPath.startsWith('http')) {
@@ -35,6 +34,7 @@ export function cache({ importmap = { imports: {} }, directory }: Config): Plugi
         return { path: join(args.resolveDir, resolvedPath) }
       })
       build.onLoad({ filter: /.*/, namespace: 'deno-cache' }, async (args) => {
+        console.log(args);
         const file = await Cache.cache(args.path, undefined, 'deps')
         const contents = await Deno.readTextFile(file.path)
         const ext = file.meta.url.split('.').pop() as Loader

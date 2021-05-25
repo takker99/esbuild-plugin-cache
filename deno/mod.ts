@@ -16,7 +16,7 @@ export function cache({ importmap = { imports: {} }, directory }: Config): Plugi
   return {
     name: 'deno-cache',
     setup(build) {
-      console.log(build);
+      console.log(build.initialOptions);
       build.onResolve({ filter: /.*/ }, async (args) => {
         if (build.initialOptions.external?.includes(args.path)) return {external: true};
         const resolvedPath = resolve(args.path, importmap)
